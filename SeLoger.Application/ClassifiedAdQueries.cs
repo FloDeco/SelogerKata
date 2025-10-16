@@ -30,7 +30,7 @@ public class ClassifiedAdQueries : IClassifiedAdQueries
                 .GetCelsiusTemperature(classifiedAd.Latitude, classifiedAd.Longitude)
                 .ConfigureAwait(false);
         }
-        catch
+        catch (Exception ex) when (ex is HttpRequestException or TaskCanceledException or TimeoutException)
         {
             // Weather API is unavailable, continue without temperature
         }

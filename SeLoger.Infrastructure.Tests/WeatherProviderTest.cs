@@ -7,7 +7,7 @@ namespace SeLoger.Infrastructure.Tests;
 public class WeatherProviderTest
 {
     [Fact]
-    public void Weather_provider_should_get_teperature_from_api()
+    public void Weather_provider_should_get_temperature_from_api()
     {
         //Arrange
         var provider  = new WeatherProvider();
