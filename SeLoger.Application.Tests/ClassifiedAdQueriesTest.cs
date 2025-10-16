@@ -65,4 +65,25 @@ public class ClassifiedAdQueriesTest
         //Assert
         classifiedAdDto.Id.Should().BeNullOrEmpty();
     }
+
+    [Fact]
+    public async Task Get_by_id_query_should_return_ad_without_temperature_when_weather_api_is_unavailable()
+    {
+        //Arrange
+        var repository                 = new ClassifiedAdRepositoryDouble(ClassifiedAdStatus.Published);
+        var weatherProviderUnavailable = new WeatherProviderUnavailableDouble();
+        var classifiedAdAdQueries      = new ClassifiedAdQueries(repository, weatherProviderUnavailable);
+        var id                         = Guid.NewGuid().ToString("D");
+
+        //Act
+        var classifiedAdDto = await classifiedAdAdQueries.GetByID(id);
+
+        //Assert
+        classifiedAdDto.Id.Should().Be(repository.GetByIdReturnedValue.Id.ToString("D"));
+        classifiedAdDto.Title.Should().Be(repository.GetByIdReturnedValue.Title);
+        classifiedAdDto.Status.Should().Be((int)repository.GetByIdReturnedValue.Status);
+        classifiedAdDto.Type.Should().Be((int)repository.GetByIdReturnedValue.Type);
+        classifiedAdDto.Description.Should().Be(repository.GetByIdReturnedValue.Description);
+        classifiedAdDto.CelsiusTemperature.Should().BeNull();
+    }
 }

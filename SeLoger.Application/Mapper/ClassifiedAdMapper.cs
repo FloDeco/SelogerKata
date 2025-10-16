@@ -5,7 +5,7 @@ namespace SeLoger.Application.Mapper;
 
 internal static class ClassifiedAdMapper
 {
-    public static ClassifiedAdDto ToDto(ClassifiedAd classifiedAd, double celsiusTemperature)
+    public static ClassifiedAdDto ToDto(ClassifiedAd classifiedAd, double? celsiusTemperature)
     {
         return new ClassifiedAdDto
         {

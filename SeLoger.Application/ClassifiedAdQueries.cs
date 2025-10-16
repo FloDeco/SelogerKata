@@ -23,9 +23,17 @@ public class ClassifiedAdQueries : IClassifiedAdQueries
         if (classifiedAd == null || classifiedAd.Status != ClassifiedAdStatus.Published)
             return new ClassifiedAdDto();
 
-        var celsiusTemperature = await weatherProvider
-            .GetCelsiusTemperature(classifiedAd.Latitude, classifiedAd.Longitude)
-            .ConfigureAwait(false);
+        double? celsiusTemperature = null;
+        try
+        {
+            celsiusTemperature = await weatherProvider
+                .GetCelsiusTemperature(classifiedAd.Latitude, classifiedAd.Longitude)
+                .ConfigureAwait(false);
+        }
+        catch
+        {
+            // Weather API is unavailable, continue without temperature
+        }
 
         return ClassifiedAdMapper.ToDto(classifiedAd, celsiusTemperature);
     }
